@@ -12,6 +12,8 @@ qt_add_executable(WaifuGalEngine WIN32 MACOSX_BUNDLE
     main.cpp
     textbar.h
     textbar.cpp
+    choiceview.h
+    choiceview.cpp
     stage.h
     stage.cpp
     game.h

@@ -46,4 +46,23 @@ void OneShakeAction::execute(IGameHandler *handler) {
   handler->addTransform(target, base, time * 0.25);
   handler->finishTransform();
 }
+
+ChoiceAction::ChoiceAction() {}
+
+ChoiceAction &ChoiceAction::addChoice(const QString &choice,
+                                      const QString &label) {
+  choices << choice;
+  labels << label;
+  return *this;
+}
+
+ChoiceAction &ChoiceAction::operator()(const QString &choice,
+                                       const QString &label) {
+  return addChoice(choice, label);
+}
+
+void ChoiceAction::execute(IGameHandler *handler) {
+  Q_ASSERT(choices.size() != 0);
+  handler->showChoices(choices, labels);
+}
 }; // namespace GalEngine

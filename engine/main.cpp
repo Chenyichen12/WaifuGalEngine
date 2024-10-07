@@ -4,11 +4,14 @@
 #include "imageprovider.h"
 #include "presets/basicaction.h"
 #include "presets/basicmotion.h"
-#include "stage.h"
-#include "textbar.h"
+
 #include <QQmlContext>
 #include <QQmlEngine>
 #include <QtQuick/QQuickView>
+
+#include "choiceview.h"
+#include "stage.h"
+#include "textbar.h"
 
 int main(int argc, char **argv) {
   QGuiApplication app(argc, argv);
@@ -45,7 +48,7 @@ int main(int argc, char **argv) {
       << new GalEngine::GoToAction("choice 1")
 
       << new GalEngine::LabelAction("choice 1")
-      << new GalEngine::TextAction("You should go choice 1 desu")
+      << new GalEngine::TextAction("You should go block 1 desu")
       << new GalEngine::GoToAction("merge")
 
       << new GalEngine::LabelAction("choice 2")
@@ -54,10 +57,27 @@ int main(int argc, char **argv) {
       << new GalEngine::LabelAction("merge")
       << new GalEngine::TextAction("Merge desu!");
 
+  auto choice1 = new GalEngine::ChoiceAction();
+  choice1->addChoice("Hello", "choice1-1")
+      .addChoice("You should see choice here", "choice1-2")
+      .addChoice("Amazing desu", "choice1-3");
+  *scene << choice1 << new GalEngine::LabelAction("choice1-1")
+         << new GalEngine::TextAction("You choose Hello desu!")
+         << new GalEngine::GoToAction("merge")
+         << new GalEngine::LabelAction("choice1-2")
+         << new GalEngine::TextAction("You choose choice 2 desu!")
+         << new GalEngine::GoToAction("merge")
+         << new GalEngine::LabelAction("choice1-3")
+         << new GalEngine::TextAction("You choose Amazing desu!")
+         << new GalEngine::GoToAction("merge");
+
+
   QQuickView view;
   view.engine()->rootContext()->setContextProperty("game", scene);
   view.engine()->rootContext()->setContextProperty("textBar", scene->textBar());
   view.engine()->rootContext()->setContextProperty("stage", scene->stage());
+  view.engine()->rootContext()->setContextProperty("choiceView",
+                                                   scene->choiceView());
 
   view.setResizeMode(QQuickView::SizeRootObjectToView);
   view.engine()->addImageProvider("character", provider);

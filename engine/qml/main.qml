@@ -1,4 +1,6 @@
 import QtQuick
+import QtQuick.Layouts
+
 Item {
     width: 1000
     height: 600
@@ -55,15 +57,61 @@ Item {
     MouseArea {
         anchors.fill: parent
         onClicked: {
+            if (choiceBar.visible) {
+                return;
+            }
             if (textBar.showing) {
                 textBar.skip();
                 return;
-            } 
-            if(stage.transforming){
+            }
+            if (stage.transforming) {
                 stage.skip();
                 return;
             }
             game.moveNext();
+        }
+    }
+
+    Rectangle {
+        id: choiceBar
+        anchors.top: parent.top
+        anchors.horizontalCenter: parent.horizontalCenter
+        width: parent.width * 0.8
+        height: parent.height * 0.7
+        visible: choiceView.visible
+        color: "transparent"
+        ColumnLayout {
+            anchors.fill: parent
+            Layout.fillHeight: true
+            Repeater {
+                model: choiceView.choices
+                Rectangle {
+                    id: choiceBox
+                    radius: 10
+                    Layout.alignment: Qt.AlignCenter
+                    height: 50
+                    width: choiceBar.width
+                    color: "black"
+                    Text {
+                        anchors.centerIn: parent
+                        text: modelData
+                        color: "white"
+                        font.pixelSize: 20
+                    }
+                    MouseArea {
+                        anchors.fill: parent
+                        onClicked: {
+                            choiceView.choose(index);
+                        }
+                        onEntered: {
+                            choiceBox.color = "red";
+                        }
+                        onExited: {
+                            choiceBox.color = "black";
+                        }
+                    }
+                }
+            }
         }
     }
 }
