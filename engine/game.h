@@ -21,6 +21,10 @@ public:
   virtual void addTransform(const QString &target, const CharacterTransform &t,
                             qreal time, int optionFlag = 0) = 0;
   virtual void finishTransform() = 0;
+  virtual void moveNext() = 0;
+  virtual void moveTo(qsizetype index) = 0;
+  virtual void moveTo(const QString& label) = 0;
+
   // virtual void moveNext() = 0;
   virtual ~IGameHandler() = default;
 };
@@ -40,7 +44,11 @@ public:
   void addTransform(const QString &target, const CharacterTransform &t,
                     qreal time, int optionFlag = 0) override;
   void finishTransform() override;
-  Q_INVOKABLE void moveNext();
+  Q_INVOKABLE void moveNext() override;
+  void moveTo(qsizetype index) override;
+  void moveTo(const QString& label) override;
+
+
   ~Game() override;
 
   Game& operator<<(GalAction *action);
@@ -48,6 +56,7 @@ private:
   GalEngineView::TextBar *textbar;
   GalEngineView::Stage *stage_;
   QList<GalAction*> actions_;
-  qsizetype currentActionIndex = 0;
+  qsizetype currentActionIndex = -1;
+  QHash<QString, qsizetype> label_table_;
 };
 } // namespace GalEngine

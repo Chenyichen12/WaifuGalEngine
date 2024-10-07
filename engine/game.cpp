@@ -12,8 +12,8 @@ Game::Game(QQuickItem *parent) : QQuickItem(parent) {
   textbar = new GalEngineView::TextBar(this);
   stage_ = new GalEngineView::Stage(this);
 }
-Game::~Game(){
-  for(auto action: actions_){
+Game::~Game() {
+  for (auto action : actions_) {
     delete action;
   }
   actions_.clear();
@@ -46,18 +46,32 @@ void Game::finishTransform() { stage_->finishTransform(); }
 
 Game &Game::operator<<(GalAction *action) {
   action->index_ = actions_.size();
+  if (action->label() != "") {
+    label_table_.insert(action->label(), action->index_);
+  }
   actions_.append(action);
   return *this;
 }
 
 void Game::moveNext() {
-  if(currentActionIndex >= actions_.size()){
+  if (currentActionIndex >= actions_.size() - 1) {
     return;
   }
   do {
-    actions_[currentActionIndex]->execute(this);
     currentActionIndex++;
+    actions_[currentActionIndex]->execute(this);
   } while (currentActionIndex < actions_.size() &&
            !actions_[currentActionIndex]->clog());
+}
+
+void Game::moveTo(qsizetype index) {
+  Q_ASSERT(index >= 0 && index < actions_.size());
+  currentActionIndex = index;
+  moveNext();
+}
+
+void Game::moveTo(const QString &label) {
+  Q_ASSERT(label_table_.contains(label));
+  moveTo(label_table_[label]);
 }
 } // namespace GalEngine

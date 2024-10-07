@@ -1,5 +1,7 @@
 #pragma once
+#include <QString>
 #include <qtypes.h>
+
 namespace GalEngine {
 class IGameHandler;
 class Game;
@@ -11,6 +13,7 @@ public:
   virtual bool clog() const { return true; }
   virtual ~GalAction() = default;
   qsizetype index() const { return index_; }
+  virtual QString label() const { return ""; };
 
 private:
   qsizetype index_;

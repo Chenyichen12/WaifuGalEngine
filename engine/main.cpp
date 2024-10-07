@@ -14,7 +14,8 @@ int main(int argc, char **argv) {
   QGuiApplication app(argc, argv);
 
   auto scene = new GalEngine::Game();
-  auto provider = new GalEngine::CharacterImageProvider(QQmlImageProviderBase::Image);
+  auto provider =
+      new GalEngine::CharacterImageProvider(QQmlImageProviderBase::Image);
   provider->addCharacter("nike_normal", QImage(":/testimage/nike_normal.png"));
   provider->addCharacter("nike_kunhuo", QImage(":/testimage/nike_kunhuo.png"));
   provider->addCharacter("nike_zhihui", QImage(":/testimage/nike_zhihui.png"));
@@ -31,18 +32,27 @@ int main(int argc, char **argv) {
   scene->show(yichen2);
   scene->show(yichen3);
 
-  *scene << new GalEngine::TextAction(
-                {"Hello World!\nThis is yichen desu!", "yichen"})
-         << new GalEngine::FadeInAction(yichen1.imageUrl, yichen1.transform,
-                                        500)
-         << new GalEngine::TextAction("Test change expression desu!")
-         << new GalEngine::ChangeCharacterAction(yichen1, yichen2)
-         << new GalEngine::TextAction(
-                "Test change expression in animation desu!")
-         << new GalEngine::ChangeCharacterAction(yichen2, yichen3, 50)
-         << new GalEngine::TextAction("Test shake desu!")
-         << new GalEngine::OneShakeAction(yichen3.imageUrl, yichen3.transform,
-                                          100);
+  *scene
+      << new GalEngine::FadeInAction(yichen1.imageUrl, yichen1.transform, 500)
+      << new GalEngine::TextAction(
+             {"Hello World!\nThis is yichen desu!", "yichen"})
+      << new GalEngine::ChangeCharacterAction(yichen1, yichen2)
+      << new GalEngine::TextAction("Test change expression desu!")
+      << new GalEngine::ChangeCharacterAction(yichen2, yichen3, 50)
+      << new GalEngine::TextAction("Test change expression in animation desu!")
+      << new GalEngine::OneShakeAction(yichen3.imageUrl, yichen3.transform, 100)
+      << new GalEngine::TextAction("Test shake desu!")
+      << new GalEngine::GoToAction("choice 1")
+
+      << new GalEngine::LabelAction("choice 1")
+      << new GalEngine::TextAction("You should go choice 1 desu")
+      << new GalEngine::GoToAction("merge")
+
+      << new GalEngine::LabelAction("choice 2")
+      << new GalEngine::TextAction("You should not go choice 2 desu")
+
+      << new GalEngine::LabelAction("merge")
+      << new GalEngine::TextAction("Merge desu!");
 
   QQuickView view;
   view.engine()->rootContext()->setContextProperty("game", scene);
