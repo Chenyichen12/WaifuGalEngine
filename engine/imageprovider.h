@@ -1,9 +1,9 @@
 #pragma once
 #include <QQuickImageProvider>
 namespace GalEngine {
-class ImageProvider : public QQuickImageProvider {
+class CharacterImageProvider : public QQuickImageProvider {
 public:
-  ImageProvider(ImageType type, Flags flags = Flags());
+  CharacterImageProvider(ImageType type, Flags flags = Flags());
   QImage requestImage(const QString &id, QSize *size,
                       const QSize &requestedSize) override;
   void addCharacter(const QString &nameUrl, QImage image);

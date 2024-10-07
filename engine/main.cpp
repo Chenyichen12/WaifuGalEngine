@@ -14,21 +14,18 @@ int main(int argc, char **argv) {
   QGuiApplication app(argc, argv);
 
   auto scene = new GalEngine::Game();
-  auto provider = new GalEngine::ImageProvider(QQmlImageProviderBase::Image);
+  auto provider = new GalEngine::CharacterImageProvider(QQmlImageProviderBase::Image);
   provider->addCharacter("nike_normal", QImage(":/testimage/nike_normal.png"));
   provider->addCharacter("nike_kunhuo", QImage(":/testimage/nike_kunhuo.png"));
   provider->addCharacter("nike_zhihui", QImage(":/testimage/nike_zhihui.png"));
 
   // characters
-  auto yichen1 =
-      GalEngine::Character("image://character/stand/nike_normal", {});
-  yichen1.transform.opacity = 0;
-  auto yichen2 =
-      GalEngine::Character("image://character/stand/nike_kunhuo", {});
-  yichen2.transform.opacity = 0;
-  auto yichen3 =
-      GalEngine::Character("image://character/stand/nike_zhihui", {});
-  yichen3.transform.opacity = 0;
+  auto yichen1 = GalEngine::Character("image://character/stand/nike_normal",
+                                      GalEngine::CharacterTransform().fade(0));
+  auto yichen2 = GalEngine::Character("image://character/stand/nike_kunhuo",
+                                      GalEngine::CharacterTransform().fade(0));
+  auto yichen3 = GalEngine::Character("image://character/stand/nike_zhihui",
+                                      GalEngine::CharacterTransform().fade(0));
   // pre add is fine
   scene->show(yichen1);
   scene->show(yichen2);
