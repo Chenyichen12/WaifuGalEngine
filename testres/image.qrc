@@ -1,0 +1,7 @@
+<RCC>
+    <qresource prefix="/testimage">
+        <file>nike_kunhuo.png</file>
+        <file>nike_normal.png</file>
+        <file>nike_zhihui.png</file>
+    </qresource>
+</RCC>

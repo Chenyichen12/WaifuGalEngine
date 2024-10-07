@@ -1,0 +1,59 @@
+{
+    "version": 3,
+    "cmakeMinimumRequired": {
+      "major": 3,
+      "minor": 19,
+      "patch": 0
+    },
+    "configurePresets": [
+      {
+        "name": "base",
+        "hidden": true,
+        "generator": "Ninja",
+        "binaryDir": "${sourceDir}/build/${presetName}",
+        "cacheVariables": {
+          "CMAKE_EXPORT_COMPILE_COMMANDS": "ON",
+          "CMAKE_INSTALL_PREFIX": "${sourceDir}/install/${presetName}"
+        }
+      },
+      {
+        "name": "android_x86_64",
+        "hidden": false,
+        "generator": "Ninja",
+        "inherits": ["base"],
+        "cacheVariables": {
+
+          "CMAKE_BUILD_TYPE": "Debug",
+          "CMAKE_PREFIX_PATH": "$env{QT_ANDROID_DIR}",
+          "CMAKE_FIND_ROOT_PATH": "$env{QT_ANDROID_DIR}",
+          "QT_QMAKE_EXECUTABLE": "$env{QT_ANDROID_DIR}/bin/qmake.bat",
+          "CMAKE_TOOLCHAIN_FILE": "$env{ANDROID_NDK}/build/cmake/android.toolchain.cmake",
+          "QT_HOST_PATH": "$env{QT_HOST_PATH}",
+
+          "ANDROID_STL": "c++_shared",
+          "CMAKE_C_COMPILER": "$env{ANDROID_NDK}/toolchains/llvm/prebuilt/windows-x86_64/bin/clang.exe",
+          "CMAKE_CXX_COMPILER": "$env{ANDROID_NDK}/toolchains/llvm/prebuilt/windows-x86_64/bin/clang++.exe",
+
+          "ANDROID_USE_LEGACY_TOOLCHAIN_FILE": "OFF",
+          "ANDROID_ABI": "x86_64",
+
+          "QT_NO_GLOBAL_APK_TARGET_PART_OF_ALL": "ON",
+          "ANDROID_NDK": "$env{ANDROID_NDK}"
+        }
+      },
+      {
+        "name": "windows_x64",
+        "hidden": false,
+        "generator": "Ninja",
+        "inherits": ["base"],
+        "cacheVariables": {
+
+          "CMAKE_BUILD_TYPE": "Debug",
+          "CMAKE_PREFIX_PATH": "$env{QT_DIR}",
+
+          "CMAKE_C_COMPILER": "cl.exe",
+          "CMAKE_CXX_COMPILER": "cl.exe"
+        }
+      }
+    ]
+  }
